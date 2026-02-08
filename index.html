@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetic Web Design</title>
+    <style>
+        /* ===== HIỆU ỨNG CỎ BỐN LÁ RƠI ===== */
+        .falling-item {
+            position: fixed;
+            top: -50px;
+            z-index: 9999;
+            pointer-events: none;
+            animation: fall linear infinite;
+            font-size: 25px; /* Kích thước cỏ */
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        :root {
+            --bg-color: #E6EADF;
+            --border-color: #5B7052;
+            --text-color: #2D402E;
+        }
+
+        /* ===== RESET & BODY ===== */
+        body {
+            margin: 0;
+            padding-top: 60px; /* chừa chỗ cho thanh mục lục */
+            background-color: #d1d1d1;
+            font-family: serif;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        /* ===== TOP NAV (MỤC LỤC) ===== */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(51, 51, 51, 0.9);
+            backdrop-filter: blur(6px);
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 12px 0;
+            z-index: 1000;
+        }
+
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .top-nav a:hover {
+            color: #FFD966;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            background-color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            color: var(--text-color);
+            padding: 20px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* ===== NAVBAR TRONG CONTAINER ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* ===== ICON BAR ===== */
+        .icon-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* ===== HERO ===== */
+        .hero-section {
+            display: flex;
+            padding: 10px;
+            gap: 15px;
+        }
+
+        .image-arch {
+            width: 50%;
+            border: 2px solid var(--border-color);
+            border-radius: 100px 100px 0 0;
+            overflow: hidden;
+            height: 250px;
+        }
+
+        .image-arch img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .title span {
+            font-size: 1.8rem;
+            font-family: cursive;
+        }
+
+        .quote-box {
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            font-size: 0.7rem;
+            margin-top: 10px;
+        }
+
+        /* ===== COLOR PALETTE ===== */
+        .color-palette {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .color-swatch {
+            width: 20%;
+            height: 20px;
+        }
+
+        /* ===== GALLERY ===== */
+        .circle-gallery {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 10px;
+        }
+
+        .circle-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .circle-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ===== FOOTER INFO ===== */
+        .footer-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        /* ===== QUOTE BOX ===== */
+        .scripture-box {
+            margin: 10px;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            background-color: rgba(91, 112, 82, 0.1);
+        }
+
+        .arabic-text {
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .translation-text {
+            font-size: 0.7rem;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* ===== DECOR ===== */
+        .flower-overlay {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 150px;
+            pointer-events: none;
+        }
+
+        .bottom-stripes {
+            height: 40px;
+            background: repeating-linear-gradient(
+                0deg,
+                var(--border-color),
+                var(--border-color) 5px,
+                transparent 5px,
+                transparent 10px
+            );
+            margin-top: 20px;
+        }
+
+        /* ===== CURSOR ===== */
+        *, *::before, *::after {
+            cursor: url("https://raw.githubusercontent.com/khuccanhthien-byte/Hoamai/refs/heads/main/Vi-cursor.png") 16 16, auto !important;
+        }
+    </style>
+</head>
+<body>
+    <a style="display: scroll; position: fixed; bottom: 3px; right: 7px;" title="Lên lại đầu trang" href="#"><img src="https://raw.githubusercontent.com/khuccanhthien-byte/Hoamai/refs/heads/main/back-to-top.jpeg" width="45" height="45" alt="" /></a>
+    <div class="top-nav">
+        <a href="page1.html">Đồ ngọt phương Đông</a>
+        <a href="page2.html">Đồ ngọt phương Tây</a>
+        <a href="page3.html">Đồ ngọt Việt Nam</a>
+        <a href="page4.html">Bải khảo sát nho nhỏ</a>
+        <a href="page5.html">Lịch sử của đồ ngọt</a>
+    </div>
+
+    <div class="container">
+        <header class="navbar">
+            <span>Cake</span>
+            <span>Ingredient</span>
+            <span>Recipe</span>
+            <span>More</span>
+        </header>
+        <div class="icon-bar">
+            <div>
+                <span>✉</span> <span>📷</span> <span>📍</span> <span>📞</span>
+            </div>
+            <div>🔖</div>
+        </div>
+        <div class="hero-section">
+            <div class="image-arch">
+                <img src="https://i.pinimg.com/736x/47/23/92/472392f336608699ac4dcfd4120d9a5f.jpg">
+            </div>
+            <div>
+                <h1 class="title">Sweetopia<br><span>N-L-V-H</span></h1>
+                <div class="quote-box">
+                    <p>History of sweets</p>
+                </div>
+                <div class="color-palette">
+                    <div class="color-swatch" style="background:#2D402E"></div>
+                    <div class="color-swatch" style="background:#5B7052"></div>
+                    <div class="color-swatch" style="background:#A9B89E"></div>
+                    <div class="color-swatch" style="background:#D1D7C4"></div>
+                    <div class="color-swatch" style="background:#E5E9DF"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="circle-gallery">
+            <div class="circle-item"><img src="https://tse2.mm.bing.net/th/id/OIP.FQ87oeLmTmIblZW_Yz152QHaHa?w=800&h=800&rs=1&pid=ImgDetMain&o=7&rm=3"></div>
+            <div class="circle-item"><img src="https://i.pinimg.com/736x/93/9d/3d/939d3dbbd316e2941ca34ad5490af9c1.jpg"></div>
+            <div class="circle-item"><img src="https://ajafoppkyr.cloudimg.io/https://f004.backblazeb2.com/file/caffe-concerto/misc/4cffae85f229802eb82f2521760dabfd.jpeg?w=580&h=580"></div>
+            <div class="circle-item"><img src="https://i.pinimg.com/736x/13/f9/a1/13f9a17cd9829edf55857b3c61b06709.jpg"></div>
+        </div>
+
+        <div class="footer-info">
+            <p>Created by @Lvnhiiiu</p>
+        </div>
+
+        <div class="scripture-box">
+            <div class="arabic-text">
+                Let the taste of sweetness linger like a soft melody in the wind
+            </div>
+            <div class="translation-text">
+                “Đồ ngọt không chỉ để ăn, mà để cảm nhận hạnh phúc tan trên đầu lưỡi.”
+            </div>
+        </div>
+        <img src="https://via.placeholder.com/200" class="flower-overlay">
+        <footer class="bottom-stripes"></footer>
+    </div>
+
+    <script>
+        function createDrop() {
+            const drop = document.createElement('div');
+            drop.classList.add('falling-item');
+            
+            // Nội dung là emoji cỏ bốn lá
+            drop.innerHTML = '☘️';
+            
+            // Vị trí ngẫu nhiên theo chiều ngang
+            drop.style.left = Math.random() * 100 + 'vw';
+            
+            // Kích thước ngẫu nhiên (từ 15px đến 30px)
+            const size = Math.random() * 8 + 5 + 3;
+            drop.style.fontSize = size + 'px';
+            
+            // Thời gian rơi ngẫu nhiên (từ 4s đến 8s)
+            const duration = Math.random() * 4 + 4;
+            drop.style.animationDuration = duration + 's';
+            
+            // Độ mờ ngẫu nhiên
+            drop.style.opacity = Math.random() * 0.1 + 0.3;
+
+            document.body.appendChild(drop);
+
+            // Xóa sau khi rơi xong để tránh nặng web
+            setTimeout(() => {
+                drop.remove();
+            }, duration * 1000);
+        }
+
+        // Tạo cỏ mới mỗi 300ms (khoảng 3 cái mỗi giây)
+        setInterval(createDrop, 300);
+    </script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Tráng Miệng Pháp & Ý</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Allura&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#d9cfc4;
+  font-family:'Playfair Display',serif;
+  color:#5a3b2e;
+}
+
+/* ===== BASIC LAYOUT ===== */
+.section{
+  width:90%;
+  margin:70px auto;
+  background:#fdfaf4;
+  border-radius:60px;
+  padding:70px;
+}
+.section-title{
+  text-align:center;
+  font-family:'Allura',cursive;
+  font-size:3em;
+  margin-bottom:60px;
+}
+
+/* ===== GRID ===== */
+.grid-3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:50px;
+}
+.grid-2{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:70px;
+  width:70%;
+  margin:auto;
+}
+.card{
+  text-align:center;
+  cursor:pointer;
+}
+.card img{
+  width:100%;
+  border-radius:30px;
+}
+.card h3{
+  margin-top:20px;
+  font-weight:500;
+}
+
+/* ===== ENVELOPE OVERLAY ===== */
+.envelope-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  z-index:1000;
+}
+
+/* ===== ENVELOPE ===== */
+.envelope{
+  width:520px;
+  height:360px;
+  margin:8% auto;
+  position:relative;
+  perspective:1200px;
+}
+
+/* BACK */
+.envelope-back{
+  position:absolute;
+  inset:0;
+  background:#efe6d6;
+  border-radius:6px;
+}
+
+/* FLAP */
+.flap{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:50%;
+  background:#e6dccb;
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top;
+  transition:.8s;
+}
+
+/* PAPER */
+.paper{
+  position:absolute;
+  left:10%;
+  bottom:10%;
+  width:80%;
+  height:80%;
+  background:#fffdf7;
+  padding:40px;
+  opacity:0;
+  transform:translateY(40px);
+  transition:.8s;
+  font-size:.95em;
+  line-height:1.7;
+}
+
+/* OPEN STATE */
+.envelope.open .flap{
+  transform:rotateX(180deg);
+}
+.envelope.open .paper{
+  opacity:1;
+  transform:translateY(-60px);
+}
+
+/* CLOSE TEXT */
+.close{
+  text-align:center;
+  margin-top:30px;
+  font-style:italic;
+  cursor:pointer;
+}
+
+/* ❌ CLOSE BUTTON */
+.close-x{
+  position:absolute;
+  top:10px;
+  right:15px;
+  font-size:22px;
+  font-weight:bold;
+  cursor:pointer;
+  color:#5a3b2e;
+}
+.close-x:hover{
+  color:#b23b3b;
+}
+
+.paper h2{
+  font-family:'Allura',cursive;
+  font-size:2.2em;
+  margin-top:0;
+}
+/* ===== CURSOR ===== */
+        *, *::before, *::after {
+            cursor: url("https://raw.githubusercontent.com/khuccanhthien-byte/Hoamai/refs/heads/main/Vi-cursor.png") 16 16, auto !important;
+        }
+</style>
+<a style="display: scroll; position: fixed; bottom: 3px; right: 7px;" title="Lên lại đầu trang" href="#"><img src="https://raw.githubusercontent.com/khuccanhthien-byte/Hoamai/refs/heads/main/back-to-top.jpeg" width="45" height="45" alt="" /></a>
+</head>
+
+<body>
+
+<button 
+onclick="window.location.href='index.html'"
+style="
+  font-weight:bold;
+  background:#d8cfc6;
+  padding:12px 20px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+">
+⬅ Quay về trang chủ
+</button>
+
+<!-- ===== PHÁP ===== -->
+<section class="section">
+<h2 class="section-title">Tráng miệng nước Pháp</h2>
+<div class="grid-3">
+  <div class="card" onclick="openLetter('brulee')">
+    <img src="https://i.pinimg.com/1200x/85/b6/6b/85b66b14662ebfb945864d9987d39a15.jpg">
+    <h3>Crème Brûlée</h3>
+  </div>
+  <div class="card" onclick="openLetter('macaron')">
+    <img src="https://i.pinimg.com/1200x/89/f5/38/89f538d1d2dea7b27543da877d39b40b.jpg">
+    <h3>Macaron</h3>
+  </div>
+  <div class="card" onclick="openLetter('tatin')">
+    <img src="https://i.pinimg.com/1200x/c5/06/30/c50630570171f88022cb1be5c35cac93.jpg">
+    <h3>Tarte Tatin</h3>
+  </div>
+</div>
+</section>
+
+<!-- ===== Ý ===== -->
+<section class="section">
+<h2 class="section-title">Tráng miệng nước Ý</h2>
+<div class="grid-2">
+  <div class="card" onclick="openLetter('tiramisu')">
+    <img src="https://i.pinimg.com/736x/b2/9c/ef/b29cefa8cd04f4d0720c3e7c5d69b314.jpg">
+    <h3>Tiramisu</h3>
+  </div>
+  <div class="card" onclick="openLetter('panna')">
+    <img src="https://i.pinimg.com/1200x/a3/d0/d2/a3d0d2ed045ed86a7332a8539a29c810.jpg">
+    <h3>Panna Cotta</h3>
+  </div>
+</div>
+</section>
+
+<!-- ===== ENVELOPE ===== -->
+<div class="envelope-overlay" id="overlay">
+  <div class="envelope" id="envelope">
+    <div class="envelope-back"></div>
+    <div class="flap"></div>
+
+    <!-- ❌ NÚT ĐÓNG -->
+    <div class="close-x" onclick="closeLetter()">✕</div>
+
+    <div class="paper" id="paper"></div>
+    <div class="close" onclick="closeLetter()">⟵ Gấp thư lại</div>
+  </div>
+</div>
+
+<script>
+function openLetter(type){
+  const content={
+    brulee:`<h2>Crème Brûlée</h2>
+    <p><b>Nguồn gốc:</b> Pháp, ghi nhận năm 1691.</p>
+    <p><b>Lịch sử:</b> Món tráng miệng hoàng gia.</p>
+    <p><b>Công thức:</b> Kem trứng nướng – caramel.</p>`,
+
+    macaron:`<h2>Macaron</h2>
+    <p><b>Nguồn gốc:</b> Ý – Pháp.</p>
+    <p><b>Lịch sử:</b> Gắn với quý tộc Paris.</p>
+    <p><b>Công thức:</b> Hạnh nhân – meringue.</p>`,
+
+    tatin:`<h2>Tarte Tatin</h2>
+    <p><b>Nguồn gốc:</b> Pháp.</p>
+    <p><b>Lịch sử:</b> Sai lầm ngọt ngào.</p>
+    <p><b>Công thức:</b> Táo – caramel.</p>`,
+
+    tiramisu:`<h2>Tiramisu</h2>
+    <p><b>Nguồn gốc:</b> Ý.</p>
+    <p><b>Ý nghĩa:</b> “Pick me up”.</p>
+    <p><b>Công thức:</b> Mascarpone – cà phê.</p>`,
+
+    panna:`<h2>Panna Cotta</h2>
+    <p><b>Nguồn gốc:</b> Bắc Ý.</p>
+    <p><b>Lịch sử:</b> Truyền thống.</p>
+    <p><b>Công thức:</b> Kem sữa – gelatin.</p>`
+  };
+  paper.innerHTML=content[type];
+  overlay.style.display="block";
+  setTimeout(()=>envelope.classList.add("open"),50);
+}
+
+function closeLetter(){
+  envelope.classList.remove("open");
+  setTimeout(()=>overlay.style.display="none",600);
+}
+</script>
+
+</body>
+</html>

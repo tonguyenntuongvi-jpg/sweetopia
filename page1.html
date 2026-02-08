@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Pánh ngọt A Chấu</title>
+<link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+html{scroll-behavior:smooth;}
+
+body{margin:0; font-family:'Charm',cursive; background:#6e1414; color:#fbeec1;}
+.red-blossom{color:#8b0000; font-size:28px; margin:0 10px; text-shadow: 0 0 6px rgba(139,0,0,.6), 1px 1px 0 #d4af37;}
+
+/* ===== MENU BÊN TRÁI ===== */
+.side-menu{ position:fixed; top:0; left:0; width:340px; height:100vh; background:#5a0f0f; padding:20px 15px; overflow-y:auto; box-shadow:5px 0 25px rgba(0,0,0,.6); z-index:999;}
+
+/*NỘI DUNG BÊN PHẢI*/
+.content{margin-left:380px; padding:60px; background:#f5e6b8; min-height:100vh; box-shadow: inset 0 0 30px rgba(0,0,0,.15); color:#5a3a1a; font-size:22px; line-height:1.9;}
+
+/*MENU ACCORDION*/
+.menu-header{ cursor:pointer; padding:18px; font-size:26px; text-align:center; color:#ffd700; background: repeating-linear-gradient(45deg, rgba(255,215,0,.25) 0 6px, transparent 6px 14px),#8b0000; user-select:none;}
+
+.menu-header{text-shadow:0 0 6px rgba(255,215,0,.8);}
+
+.menu-content{max-height:0; overflow:hidden; background:#f5e6b8; transition:max-height .6s ease;}
+
+.menu-item.open .menu-content{max-height:600px;}
+
+.menu-item{border:2px solid #d4af37; margin-bottom: 28px; border-radius: 6px;}
+
+.menu-content a{display:block; padding:14px 22px; font-size:20px; color:#5a0f0f; text-decoration:none; border-bottom:1px dashed 
+    #8b0000;}
+
+.menu-content a{display:flex; align-items:center; gap:10px;}
+
+.menu-content a::before{content:"❀";}
+
+.menu-content a{display:flex; align-items:center; gap:10px;}
+
+.menu-item.china .menu-content a::before{content:"❀";}
+
+.menu-item.japan .menu-content a::before{content:"✾";}
+
+.menu-item.korea .menu-content a::before{content:"❁";}
+
+.menu-item.recipe .menu-content a::before{content:"✺"}
+
+.menu-content a:hover{background:#e7d18b;}
+
+/*HIGHLIGHT + GLOW*/
+.menu-content a.active{background:#d4af37; color:#5a0f0f; font-weight:bold; animation:goldGlow 1.8s infinite alternate;}
+
+@keyframes goldGlow{from{box-shadow:0 0 6px #ffd700;}
+    to{box-shadow:0 0 16px #ffd700;}}
+
+#backToTop{position:fixed; bottom:30px; right:30px; width:50px; height:50px; border-radius:50%; border:2px solid #d4af37; background:#8b0000; color:#ffd700; font-size:22px; cursor:pointer; display:none; z-index:9999; box-shadow:0 0 15px rgba(212,175,55,.6); transition:.3s ease;}
+
+#backToTop:hover{transform:translateY(-6px); box-shadow:0 0 25px rgba(212,175,55,.9);}
+
+/* ===== TIÊU ĐỀ ===== */
+/* CHỈ tiêu đề chính */
+.content > h1:first-of-type{text-align:center; font-size:45px; color:#8b0000; letter-spacing:6px; margin-bottom:5px; margin-top:5px; text-shadow:1px 1px 0 #d4af37;}
+
+/* Tiêu đề mục lớn: Trung Quốc, Nhật Bản, Hàn Quốc */
+.content > h1:not(:first-of-type){text-align:left; font-size:38px; color:#8b0000; margin-top:30px; margin-bottom:20px; text-shadow:1px 1px 0 #d4af37;}
+
+section{margin-bottom:80px;}
+
+section h2{font-size:36px; color:#8b0000; text-shadow:1px 1px 0 #d4af37;  margin-bottom:10px; margin-top:10px;}
+
+/*ẢNH BÁNH*/
+.cake-img{width:100%; max-width:500px; display:block; margin:20px auto; border:6px solid #d4af37; box-shadow:0 0 15px rgba(0,0,0,.4);}
+
+.footer{display: block; max-width: 100%; text-align: center; margin: 20px 0; margin-left: 400px; font-size: 26px; color: gold;}
+
+/*GALLERY BÁNH*/
+.cake-gallery{display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:28px; margin-top:30px;}
+
+.cake-gallery figure{background:#fdf1c7; border:3px solid #d4af37; border-radius:12px; padding:14px; box-shadow:0 8px 20px rgba(0,0,0,.25); transition:.35s ease;}
+
+.cake-gallery figure:hover{transform:translateY(-8px); box-shadow:0 14px 30px rgba(0,0,0,.35);}
+
+.cake-gallery img{width:100%; border-radius:8px; margin:0;}
+
+.caption{text-align:center; margin-top:12px; font-size:18px; color:#5a3a1a; font-style:italic;}
+
+/*GALLERY NGANG KIỂU TRIỂN LÃM*/
+.cake-gallery .cake-img{border: none !important; box-shadow: none !important;}
+
+.cake-gallery.horizontal{display:flex; gap:30px; overflow-x:auto; padding:30px 10px 40px; scroll-snap-type:x mandatory;}
+
+/*Thanh cuộn mượt*/
+.cake-gallery.horizontal::-webkit-scrollbar{height:10px;}
+
+.cake-gallery.horizontal::-webkit-scrollbar-thumb{background:#d4af37; border-radius:10px;}
+
+.cake-gallery.horizontal::-webkit-scrollbar-track{background:#f1e1a6;}
+
+/*Hiệu ứng hover*/
+.cake-gallery.horizontal figure:hover{transform:translateY(-10px) scale(1.04); box-shadow: 0 18px 40px rgba(0,0,0,.45), inset 0 0 22px rgba(212,175,55,.6);}
+
+/*Ảnh*/
+.cake-gallery.horizontal img{width:100%; border-radius:8px;}
+
+/*Caption*/
+.cake-gallery.horizontal .caption{ text-align:center; margin-top:14px; font-size:18px; color:#5a3a1a; font-style:italic;}
+
+.cake-gallery figure{display: flex; flex-direction: column; align-items: center;}
+
+.cake-gallery img{display: block; margin: 0 auto;}
+
+.caption{margin-top:10px; font-weight:bold; text-align:center; color: saddlebrown;}
+
+
+/*HOA MAI RƠI RỤNG*/
+.petal{position:fixed; top:-50px; color: #FFC125; animation:fall linear infinite; opacity:.8; pointer-events:none; z-index:9999;}
+
+.content{ position: relative; z-index: 2; }
+
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);}}
+
+/*RECIPE BOX*/
+.recipe-box{background:#8b0000; border:4px solid #d4af37; padding:20px 60px; margin:10px auto; max-width:950px; color:#f5e6b8; box-shadow: 0 0 30px rgba(0,0,0,.45), inset 0 0 25px rgba(212,175,55,.15);}
+
+/*TIÊU ĐỀ*/
+.recipe-title{text-align:center; font-size:40px; letter-spacing:4px; color:#ffd700; margin-bottom:12px; text-shadow:1px 1px 0 #5a0f0f;}
+
+.recipe-sub{font-size:30px; color:#ffd700; letter-spacing:3px; margin-bottom:20px;}
+
+.ingredients{width:100%; border-collapse:collapse; margin-bottom:40px;}
+
+.ingredients td{padding:16px 10px; border-bottom:1px solid rgba(255,215,0,.35); font-size:22px;}
+
+.ingredients td:first-child{color:#f5e6b8; font-weight:bold;}
+
+.step-box{background:rgba(255,215,0,.08); padding:22px 26px; border-left:6px solid #d4af37; font-size:22px; line-height:1.9; border-radius:6px; margin-bottom: 25px;}
+
+.divider-ornament{width: 60%; margin: 15px auto; text-align: center; position: relative;}
+
+.divider-ornament::before{content: "༺ ❀ ✿ ❁ ❃ ❋ ✾ ✽ ✺ ༻"; color: #8b0000; font-size: 18px; letter-spacing: 12px; top:-200px;}
+
+.country-tag{position: relative; display: inline-block; padding: 14px 52px 14px 32px; font-size: 34px; font-weight: bold; letter-spacing: 3px; color: #f1cf77; background: linear-gradient(135deg, #8b0000, #b22222); margin: 30px 0 20px;
+    clip-path: polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.25), 0 6px 12px rgba(0,0,0,0.35); text-shadow:1px 1px 0 #fff1c1, 2px 2px 0 #c9a23a, 0 0 6px rgba(255,215,120,0.7);}
+
+.country-tag::after{content: ""; position: absolute; inset: 0; border: 2px solid #e6c46a; box-sizing: border-box; clip-path: polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%); pointer-events: none;}
+
+.title-frame{position: relative; display: inline-block; padding: 18px 48px; background: linear-gradient(135deg, #7a0000, #a80000, #7a0000); clip-path: polygon(18px 0%,  calc(100% - 18px) 0%, 100% 14px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 14px 100%, 0% calc(100% - 18px), 0% 18px); border: 3px solid #e6c46a; box-shadow:0 8px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.15); margin: 30px auto 40px;}
+
+.title-frame::before{content: ""; position: absolute; inset: 6px; border: 1.5px solid rgba(255, 215, 140, 0.9);
+ clip-path: polygon(10px 0%,  calc(100% - 10px) 0%, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0% calc(100% - 10px), 0% 10px); pointer-events: none;}
+
+.main-title{margin: 0; font-size: 39px; letter-spacing: 6px; color: #f5d98a; text-shadow:1px 1px 0 #fff3c4,2px 2px 0 #c9a23a,0 0 8px rgba(255,215,120,0.8); font-weight: bold; text-align: center;}
+
+.title-note{ margin: 5px auto 20px;text-align: center; font-size: 25px; letter-spacing: 2px; color: #6b3f1d; /* nâu đậm */
+ font-style: italic; text-shadow: 1px 1px 0 rgba(255,255,255,0.6); opacity: 0.9;}
+
+*,
+*::before,
+*::after {cursor: url("https://raw.githubusercontent.com/khuccanhthien-byte/Hoamai/refs/heads/main/snapedit_1770527888297.png") 16 16, auto !important;}
+
+.back-wrap{margin: 1px 0;}
+
+.back-home{color: #8b2a2a; font-size: 20px; text-decoration: none; letter-spacing: 2px; padding: 10px 20px; border-bottom: 1px solid #c9a23a;}
+
+.back-home:hover{color: #c9a23a;}
+
+</style>
+</head>
+
+<body>
+/*MENU*/
+<div class="side-menu">
+
+<!-- TRUNG QUỐC -->
+<div class="menu-item china">
+    <div class="menu-header">❀ Trung Quốc ❀</div>
+    <div class="menu-content">
+        <a href="#hoa-que">Bánh hoa quế</a>
+        <a href="#hoa-hong">Bánh hoa hồng</a>
+        <a href="#cu-nang">Bánh củ năng</a>
+        <a href="#trung-khac">Một số loại bánh truyền thống khác</a>
+    </div>
+</div>
+
+<!-- NHẬT BẢN -->
+<div class="menu-item japan">
+    <div class="menu-header">❃ Nhật Bản ❃</div>
+    <div class="menu-content">
+        <a href="#mochi">Bánh Mochi</a>
+        <a href="#taiyaki">Bánh Taiyaki</a>
+        <a href="#karukan">Bánh Karukan</a>
+        <a href="#nhat-khac">Một số loại bánh truyền thống khác</a>
+    </div>
+</div>
+
+<!-- HÀN QUỐC -->
+<div class="menu-item korea">
+    <div class="menu-header">❁ Hàn Quốc ❁</div>
+    <div class="menu-content">
+        <a href="#dasik">Bánh trà Dasik</a>
+        <a href="#jeungpyeon">Jeungpyeon (Bánh gạo rượu)</a>
+        <a href="#songpyeon">Songpyeon (Bánh gạo hình bán nguyệt)</a>
+        <a href="#han-khac">Một số loại bánh truyền thống khác</a>
+    </div>
+</div>
+
+<div class="menu-item recipe">
+    <div class="menu-header">✺ Công thức làm bánh ✺</div>
+    <div class="menu-content">
+        <a href="#lamhoaque">Bánh hoa quế</a>
+        <a href="#lamhoahong">Bánh hoa hồng</a>
+        <a href="#lamcunang">Bánh củ năng</a>
+        <a href="#lammochi">Bánh Mochi</a>
+        <a href="#lamtaiyaki">Bánh Taiyaki</a>
+        <a href="#lamkarukan">Bánh Karukan</a>
+        <a href="#lamdasik">Bánh trà Dasik</a>
+        <a href="#lamjeungpyeon">Jeungpyeon (Bánh gạo rượu)</a>
+        <a href="#lamsongpyeon">Songpyeon (Bánh gạo hình bán nguyệt)</a>
+    </div>
+</div>
+
+</div>
+
+<!-- ===== NỘI DUNG ===== -->
+<div class="content">
+
+<div class="back-wrap">
+  <a href="index.html" class="back-home">❮❮❮ Quay về trang chủ ❀</a>
+</div>
+
+<div class="title-frame">
+    <h1 class="main-title">༺ VỊ NGỌT PHƯƠNG ĐÔNG ༻</h1>
+</div>
+
+<div class="title-note">Sưu tầm và code by: Ngừi ít online:)</div>
+
+<div class="divider-ornament"></div>
+
+<h2 class="country-tag">I. TRUNG QUỐC</h2>
+
+<section id="hoa-que"><h2>1. Bánh hoa quế:</h2>
+<p>Bánh hoa quế là món tráng miệng/điểm tâm truyền thống của Trung Quốc, làm từ bột nếp, mật hoa quế, đường phèn, kỷ tử, hạt dẻ. Có vẻ ngoài đẹp mắt, ăn mềm dẻo, thơm lừng, vị ngọt thanh mát và có tác dụng dưỡng nhan.</p>
+<img src="https://i.pinimg.com/1200x/57/67/fa/5767fa1680a56231214cd8d046b2ee59.jpg" class="cake-img">
+<div class="caption">Bánh hoa quế truyền thống làm từ bột nếp</div>
+<img src="https://cf.shopee.vn/file/23f112b41a6eafbf94d72c47ecf1bd15" class="cake-img">
+<div class="caption">Bánh hoa quế phiên bản hiện đại làm từ thạch dẻo</div></section>
+
+<section id="hoa-hong"><h2>2. Bánh hoa hồng:</h2>
+<p>Bánh hoa hồng Vân Nam là đặc sản nổi tiếng của vùng Lệ Giang, tỉnh Vân Nam Trung Quốc, có vỏ bánh ngàn lớp giòn rụm đặc trưng và nhân làm từ cánh hoa hồng tươi, đường phèn, mật ong, mang vị ngọt thanh, thơm dịu.</p>
+<img src="https://wondertour.vn/storage/upload/2025/09/1758276351.jpg" class="cake-img"></section>
+
+<section id="cu-nang"><h2>3. Bánh củ năng:</h2>
+<p>Bánh củ năng có nguồn gốc từ thời nhà Đường. Nó được hấp với nước đường pha với bột củ năng hoặc bột khoai lang làm nhân, có màu vàng trà, trong mờ, có thể gấp lại mà không bị gãy, mềm dai và ngọt ngào. </p>
+<img src="https://riba.vn/wp-content/uploads/2023/04/eb1b0564be125ffc0c5fca9c1ab7c70c-1.jpeg" class="cake-img"></section>
+
+<section id="trung-khac">
+<h2>4. Một số loại bánh truyền thống khác:</h2>
+<div class="cake-gallery">
+    <figure>
+        <img src="https://riba.vn/wp-content/uploads/2023/04/2e847e1171d60e186e467863f945f0af-1.jpg" class="cake-img">
+        <figcaption class="caption">Bánh oản đậu hoàng</figcaption>
+    </figure>
+
+    <figure>
+        <img src="https://riba.vn/wp-content/uploads/2023/04/af86b0fc4df005ce65acd68bd145a056-1.jpeg" class="cake-img">
+        <figcaption class="caption">Bánh phu nhân</figcaption>
+    </figure>
+
+    <figure>
+        <img src="https://riba.vn/wp-content/uploads/2023/04/468207edb668c887d353f9b680e647b6-1.jpeg" class="cake-img">
+        <figcaption class="caption">Bánh lừa cuộn</figcaption>
+    </figure>
+
+    <figure>
+        <img src="https://riba.vn/wp-content/uploads/2023/04/62d596e5a8b0fa14a557bd0d31e5c01f-1.jpeg" class="cake-img">
+        <figcaption class="caption">Bánh hạnh nhân</figcaption>
+    </figure>
+    <figure>
+        <img src="https://i.pinimg.com/736x/5f/e5/95/5fe5957efe332b46cb889b1c1600ed87.jpg" class="cake-img">
+        <figcaption class="caption">Bánh Trung Thu (Bánh nguyệt)</figcaption>
+    </figure>
+    <figure>
+        <img src="https://i.pinimg.com/736x/7b/c6/ca/7bc6caf347007db2e7996c07b9f15e48.jpg" class="cake-img">
+        <figcaption class="caption">Bánh dứa</figcaption>
+    </figure>
+</div>
+</section>
+
+<h2 class="country-tag">II. NHẬT BẢN</h2>
+<section id="mochi"><h2>1. Bánh Mochi:</h2>
+<p>Mochi là một loại bánh giầy nhân ngọt được làm từ bột gạo nếp hay gạo nếp giã nhuyễn. Loại bánh này không chỉ xuất hiện trong đời sống thường ngày của người Nhật mà còn mang ý nghĩa thiêng liêng vào những ngày lễ, ngày Tết tại Nhật để cầu may mắn và trường thọ. Nó xuất hiện vào giữa thế kỉ 18, tại kinh thành Edo.</p>
+<img src="https://i.pinimg.com/1200x/a2/fb/9a/a2fb9aa0f36eab38d5095b2654cec303.jpg" class="cake-img">
+<h3>Một số loại mochi phổ biến:</h3>
+<div class="cake-gallery">
+    <figure>
+        <img src="https://phunuvietnam.mediacdn.vn/media/news/52e757313eee219d90756fee82d49c2c/mochi-giot-nuoc-9.jpg" class="cake-img">
+        <figcaption class="caption">Warabimochi (Mochi giọt nước)</figcaption>
+    </figure>
+
+    <figure>
+        <img src="https://i.pinimg.com/1200x/fe/ea/c3/feeac36d197d7deab0ca5c2823261d19.jpg" class="cake-img">
+        <figcaption class="caption">Dango (Mochi xiên que)</figcaption>
+    </figure>
+
+    <figure>
+        <img src="https://i.pinimg.com/736x/8b/6d/a6/8b6da66ec111fa153c058d72062b307c.jpg" class="cake-img">
+        <figcaption class="caption">Daifuku (Mochi nhân trái cây)</figcaption>
+    </figure>
+
+    <figure>
+        <img src="https://www.kikkoman.com/en/cookbook/assets/img/GlossaryKusamochi.jpg" class="cake-img">
+        <figcaption class="caption">Kusamochi (Mochi ngải cứu)</figcaption>
+    </figure>
+    <figure>
+        <img src="https://i.pinimg.com/1200x/f2/a8/56/f2a856d1277ed0a96e82795240e5c500.jpg" class="cake-img">
+        <figcaption class="caption">Sakuramochi (Mochi hoa anh đào)</figcaption>
+    </figure>
+    <figure>
+        <img src="https://i.pinimg.com/1200x/6a/e4/f5/6ae4f5b083e06a12d1d5d811c488c74b.jpg" class="cake-img">
+        <figcaption class="caption">Kirimochi (Mochi không nhân nướng)</figcaption>
+    </figure>
+</div>
+</section>
+<section id="taiyaki"><h2>2. Bánh Taiyaki:</h2><p>Taiyaki là loại bánh nướng truyền thống có hình cá tráp xuất xứ từ Nhật Bản, có vỏ làm từ bột mì, nhân là hỗn hợp đậu đỏ xay nhuyễn với đường.</p>
+<p>Ngày nay, bánh cá Taiyaki đã được biến tấu với nhiều loại nhân khác nhau như kem trứng, socola, caramel, phô mai, matcha, ... bên cạnh nhân đậu đỏ truyền thống.</p>
+<img src="https://i.pinimg.com/736x/56/47/f7/5647f73be0759af62339e72c03bfbd91.jpg" class="cake-img">
+</section>
+<section id="karukan"><h2>3. Bánh Karukan:</h2>
+<p>Là đặc sản vùng Kyushu, được làm từ bột gạo karukan, đường, khoai mỡ Nhật Bản nghiền nhuyễn. Karukan thông thường trông giống như một miếng bánh mì trắng dày mà không có lớp vỏ, bánh mềm, nhẹ, dẻo, đàn hồi giống bọt biển, vị ngọt dịu, thơm nhẹ. </p>
+<img src="https://i.pinimg.com/736x/87/76/8e/87768e31bd4e327efbdaf82f39f82b9e.jpg" class="cake-img">
+</section>
+<section id="nhat-khac">
+<h2>4. Một số loại bánh truyền thống khác:</h2>
+<div class="cake-gallery">
+    <figure>
+        <img src="https://i.pinimg.com/1200x/62/34/d3/6234d3582633438725de7b37a116c9f5.jpg" class="cake-img">
+        <figcaption class="caption">Bánh Monaka</figcaption>
+    </figure>
+
+    <figure>
+        <img src="https://i.pinimg.com/736x/1d/05/a6/1d05a62cc905823435f7afec9e629654.jpg" class="cake-img">
+        <figcaption class="caption">Bánh Dorayaki</figcaption>
+    </figure>
+
+    <figure>
+        <img src="https://cdn.jeepe.jp/uploads/public_image/image/191/normal_a6d601d9-0bd6-4ecc-98ba-8f61068830ac.jpg" class="cake-img">
+        <figcaption class="caption">Bánh Yatsuhashi</figcaption>
+    </figure>
+
+    <figure>
+        <img src="https://i.pinimg.com/736x/37/32/93/373293572fa06d6742785a0afd6cb6fa.jpg" class="cake-img">
+        <figcaption class="caption">Bánh Imagawayaki</figcaption>
+    </figure>
+    <figure>
+        <img src="https://i.pinimg.com/1200x/7f/66/6d/7f666d356a0e0c3a58782e23d3440a37.jpg" class="cake-img">
+        <figcaption class="caption">Bánh Uiro</figcaption>
+    </figure>
+    <figure>
+        <img src="https://i.pinimg.com/736x/ea/3a/bc/ea3abc381a5a385902a0fe4a2932e791.jpg" class="cake-img">
+        <figcaption class="caption">Bánh Manju</figcaption>
+    </figure>
+</div>
+</section>
+
+<h2 class="country-tag">III. HÀN QUỐC</h2>
+<section id="dasik"><h2>1. Bánh trà Dasik:</h2>
+<p>Đây là loại bánh quy dùng chung với trà được làm từ bột hạt rang khô, dược thảo phương Đông, mật ong, bánh có 5 màu sắc (trắng, vàng, xanh, nâu, đen) đại diện cho ngũ hành. Jình thức tinh xảo với hình in hoa lá, chim chóc, chữ Hán tự và màu sắc bắt mắt, vị ngọt dịu và tan trong miệng.</p>
+<img src="https://i.pinimg.com/1200x/07/69/34/076934a571663aa0aef54b17fdadcc79.jpg" class="cake-img">
+</section>
+
+<section id="jeungpyeon"><h2>2. Jeungpyeon (Bánh gạo rượu):</h2>
+<p>Bánh gạo rượu Jeungpyeon được làm từ bột gạo nhào cùng rượu gạo makgeolli. Bên trong bánh là táo tàu, hạt dẻ, hạt thông và nấm đá. Bánh được chế biến dưới dạng hấp, vị chua nhẹ và khá mềm, đặc biệt là hương rượu gạo thơm nồng độc đáo hơn bất cứ loại bánh nào ở Hàn Quốc.</p>
+<img src="https://i.pinimg.com/736x/c3/82/53/c3825387944fe430b63ea3291aaa4a8c.jpg" class="cake-img">
+</section>
+
+<section id="songpyeon"><h2>3. Songpyeon (Bánh gạo hình bán nguyệt):</h2>
+<p>Songpyeon là loại bánh đặc sản mỗi mùa lễ Chuseok (Tết Trung Thu), được làm từ bột gạo nhào với nước ấm và có nhân đậu xanh, đậu đen, hạt mè, hạt dẻ. Người Hàn Quốc tin rằng "trăng khuyết rồi lại tròn" là biểu tượng của sự may mắn, sinh sôi nảy nở nên bánh mới có hình bán nguyệt đặc trưng.</p>
+<img src="https://i.pinimg.com/1200x/f6/96/99/f6969955e7b5cff89de2fa42945b6f72.jpg" class="cake-img">
+</section>
+
+<section id="han-khac"><h2>4. Một số loại bánh truyền thống khác:</h2>
+<div class="cake-gallery">
+    <figure>
+        <img src="https://i.pinimg.com/1200x/b4/1f/26/b41f26b4f7233a709458d0f9eed03772.jpg" class="cake-img">
+        <figcaption class="caption">Yakgwa (Bánh mật ong)</figcaption>
+    </figure>
+
+    <figure>
+        <img src="https://cdn.shopify.com/s/files/1/0617/2497/files/2Maejakgwa_end_L1_large_62243621-737c-4af2-9d73-fe888de957a1_large.jpg?v=1560239697" class="cake-img">
+        <figcaption class="caption">Maekjagwa (Bánh hoa mơ)</figcaption>
+    </figure>
+
+    <figure>
+        <img src="https://toplist.vn/images/800px/baekseolgi-banh-gao-hap-246757.jpg" class="cake-img">
+        <figcaption class="caption">Baekseolgi (Bánh gạo hấp)</figcaption>
+    </figure>
+
+    <figure>
+        <img src="https://i.pinimg.com/736x/63/5c/21/635c216c128d6fadb8bf0fb4f2639aa6.jpg" class="cake-img">
+        <figcaption class="caption">Gyeongdan (Bánh gạo viên)</figcaption>
+    </figure>
+    <figure>
+        <img src="https://i.pinimg.com/736x/c3/6c/eb/c36ceb76c0b67577727b81312e2bcd62.jpg" class="cake-img">
+        <figcaption class="caption">Injeolmi (Bánh nếp đậu rang)</figcaption>
+    </figure>
+    <figure>
+        <img src="https://i.pinimg.com/736x/a9/47/74/a9477417b2e01eb7aef32d4198253687.jpg" class="cake-img">
+        <figcaption class="caption">Hobaktteok (Bánh gạo bí đỏ)</figcaption>
+    </figure>
+</div>
+
+<div class="recipe-box">
+
+  <section id="lamhoaque">
+  <h3 class="recipe-title">CÁCH LÀM BÁNH HOA QUẾ</h3>
+  <h4 class="recipe-sub">❖NGUYÊN LIỆU</h4>
+  <table class="ingredients">
+    <tr><td>Bột gạo</td><td>100g</td></tr>
+    <tr><td>Hoa quế khô</td><td>10g</td></tr>
+    <tr><td>Đường phèn</td><td>250g</td></tr>
+    <tr><td>Bột nếp</td><td>25g</td></tr>
+    <tr><td>Mỡ heo</td><td>15g</td></tr>
+  </table>
+
+  <div class="step-box">
+    <strong>Bước 1: Làm mật quế hoa.</strong>
+    <p>Nấu hoa quế khô trong nước sôi, chắt bỏ bã, giữ lại nước cốt sên với đường để làm mật.</p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 2: Làm bột bánh.</strong>
+    <p>Trộn đều bột gạo, bột nếp, đường, mỡ heo, pha thêm chút mật hoa quế vừa nấu, vo đều đến khi bộ nắm lại được nhưng không vỡ ra rồi rây qua lọc. </p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 3: Hấp bánh.</strong>
+    <p>Hấp bánh trong 15 phút rồi rưới mật lên thưởng thức.</p>
+  </div>
+  </section>
+</div>
+
+<div class="recipe-box">
+<section id="lamhoahong">
+  <h3 class="recipe-title">CÁCH LÀM BÁNH HOA HỒNG</h3>
+  <h4 class="recipe-sub">❖NGUYÊN LIỆU</h4>
+  <table class="ingredients">
+    <tr><td>Cánh hoa hồng tươi</td><td>100g</td></tr>
+    <tr><td>Đường trắng</td><td>100g</td></tr>
+    <tr><td>Bột mì</td><td>300g</td></tr>
+    <tr><td>Mỡ lợn</td><td>50g</td></tr>
+    <tr><td>Bơ đun chảy</td><td>50g</td></tr>
+    <tr><td>Trứng gà</td><td>1 lòng đỏ</td></tr>
+    <tr><td>Mật ong</td><td>50ml</td></tr>
+  </table>
+
+  <div class="step-box">
+    <strong>Bước 1: Làm nhân hoa hồng.</strong>
+    <p>Giã nhuyễn hoa hồng đã rửa sạch, trộn cùng bột mì đã rang chín, mỡ lợn, mật ong và đường, vò thành viên nhỏ.</p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 2: Làm lớp vỏ ngoài.</strong>
+    <p>Trộn bột mì, đường, bơ, trứng cùng mỡ lợn, thêm nước rồi nhào dẻo, để nghỉ 30 phút.</p>
+  </div>
+
+ <div class="step-box">
+    <strong>Bước 3: Làm lớp vỏ giữa.</strong>
+    <p>Trộn bột mì với mỡ lợn và bơ đun chảy, nhào dẻo rồi để nghỉ 30 phút.</p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 4: Làm lớp vỏ bánh nghìn lớp.</strong>
+    <p>Lấy hai phần bột đã chuẩn bị đặt lên nhau, bọc kín rồi cán mỏng nhiều lần, gói nhân vào giữa.</p>
+  </div>
+
+  <div class="step-box">
+    <strong>Bước 5: Tạo hình và nướng bánh.</strong>
+    <p>Dùng tay ấn dẹt bánh (tạo hình), phết hỗn hợp lòng đỏ trứng và bơ đun chảy lên mặt bánh, nướng 15 phút ở mức 180°C.</p>
+  </div>
+  </section>
+</div>
+
+<div class="recipe-box">
+<section id="lamcunang">
+  <h3 class="recipe-title">CÁCH LÀM BÁNH CỦ NĂNG</h3>
+  <h4 class="recipe-sub">❖NGUYÊN LIỆU</h4>
+  <table class="ingredients">
+    <tr><td>Bột củ năng</td><td>150g</td></tr>
+    <tr><td>Củ năng tươi (hoặc đóng hộp)</td><td>5 củ</td></tr>
+    <tr><td>Đường thốt nốt</td><td>100g</td></tr>
+    <tr><td>Nước</td><td>700ml</td></tr>
+  </table>
+
+  <div class="step-box">
+    <strong>Bước 1: Làm bột bánh.</strong>
+    <p>Trộn đều bột củ năng, đường thốt nốt và nước, nấu trên lửa nhỏ, khuấy đều tay đến khi bột sệt lại.</p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 2: Sơ chế củ năng.</strong>
+    <p>Rửa sạch củ năng, gọt bỏ vỏ, ngâm với nước muối rồi rửa lại, dùng dao cắt thành từng khối nhỏ.</p>
+  </div>
+
+  <div class="step-box">
+    <strong>Bước 3: Đổ bánh.</strong>
+    <p>Đổ một lớp bột, một lớp củ năng vào khuôn và lặp đi lặp lại đến khi hết nguyên liệu.</p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 4: Hấp bánh.</strong>
+    <p>Hấp bánh trong 40 - 50 phút, bánh chín thì cắt thành từng lát dày rồi thưởng thức.</p>
+  </div>
+  </section>
+</div>
+
+<div class="recipe-box">
+<section id="lammochi">
+  <h3 class="recipe-title">CÁCH LÀM BÁNH MOCHI</h3>
+  <h4 class="recipe-sub">❖NGUYÊN LIỆU</h4>
+  <table class="ingredients">
+    <tr><td>Đậu đỏ</td><td>120g</td></tr>
+    <tr><td>Bột gạo nếp</td><td>160g</td></tr>
+    <tr><td>Đường trắng</td><td>100g</td></tr>
+    <tr><td>Gia vị</td><td>Một ít dầu ăn, muối</td></tr>
+  </table>
+
+  <div class="step-box">
+    <strong>Bước 1: Làm nhân đậu đỏ. </strong>
+    <p>Ngâm đậu khoảng 4 tiếng rồi nấu chín, cho vào máy xay sinh tố cùng 20ml nước rồi xay nhuyễn. Sên đậu trên lửa nhỏ cùng dầu ăn và đường đến khi đặc sệt. Nhân nguội thì vo thành từng viên tròn.</p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 2: Làm bột bánh.</strong>
+    <p>Hấp hỗn hợp bột nếp, muối, nước trong 10 phút. Thêm đường, khuấy đến khi bột dẻo quánh lại.</p>
+  </div>
+
+    <div class="step-box">
+    <strong>Bước 3: Gói bánh.</strong>
+    <p>Cán mỏng bột bánh, gói kín nhân mứt đậu đỏ, xoay tròn cho bánh nhẵn hơn rồi thưởng thức.</p>
+  </div>
+
+  </section>
+</div>
+
+<div class="recipe-box">
+  <section id="lamtaiyaki">
+  <h3 class="recipe-title">CÁCH LÀM BÁNH TAIYAKI</h3>
+  <h4 class="recipe-sub">❖NGUYÊN LIỆU</h4>
+  <table class="ingredients">
+    <tr><td>Bột mì đa dụng</td><td>150g</td></tr>
+    <tr><td>Đậu đỏ</td><td>100g</td></tr>
+    <tr><td>Đường trắng</td><td>45g</td></tr>
+    <tr><td>Bột nếp</td><td>25g</td></tr>
+    <tr><td>Trứng gà</td><td>1 lòng đỏ</td></tr>
+    <tr><td>Muối nở</td><td>1 muỗng cà phê</td></tr>
+    <tr><td>Bột nở</td><td>1 muỗng cà phê</td></tr>
+    <tr><td>Gia vị</td><td>Một ít muối, dầu ăn</td></tr>
+  </table>
+
+  <div class="step-box">
+    <strong>Bước 1: Làm bột bánh.</strong>
+    <p>Trộn đều bột mì, bột nở, muối nở rồi lọc qua rây, thêm đường vào trộn cùng. Ở một tô khác, đánh đều lòng đỏ trứng với sữa rồi đổ vào tô bột trộn đều, để lạnh ít nhất 1 tiếng.</p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 2: Làm nhân đậu đỏ.</strong>
+    <p>Rửa sạch đậu, ngâm qua đêm rồi luộc chín nhừ và nghiền nát, sên trên lửa nhỏ với đường và chút muối </p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 3: Nướng bánh.</strong>
+    <p>Làm nóng khuôn, phết dầu ăn chống dính, đổ bột đầy 60% khuôn, thêm nhân đậu đỏ rồi phủ kín. Nướng lửa vừa mỗi bên từ 3 - 4 phút cho chín vàng.</p>
+  </div>
+  </section>
+</div>
+
+<div class="recipe-box">
+<section id="lamkarukan">
+  <h3 class="recipe-title">CÁCH LÀM BÁNH KARUKAN</h3>
+  <h4 class="recipe-sub">❖NGUYÊN LIỆU</h4>
+  <table class="ingredients">
+    <tr><td>Bột gạo tẻ (gạo Karukan)</td><td>200g</td></tr>
+    <tr><td>Khoai mỡ Nhật Bản</td><td>300g</td></tr>
+    <tr><td>Đường trắng</td><td>150g</td></tr>
+  </table>
+
+  <div class="step-box">
+    <strong>Bước 1: Làm bột bánh</strong>
+    <p>Trộn đường vào khoai mỡ nghiền đã nấu chín rồi đổ bột gạo vào, nhào đến khi dẻo.</p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 2: Hấp bánh</strong>
+    <p>Hấp lửa vừa 20 - 30 phút, bánh chín thì cắt thành lát mỏng.</p>
+  </div>
+
+  </section>
+</div>
+
+<div class="recipe-box">
+<section id="lamdasik">
+  <h3 class="recipe-title">CÁCH LÀM BÁNH TRÀ DASIK</h3>
+  <h4 class="recipe-sub">❖NGUYÊN LIỆU</h4>
+  <table class="ingredients">
+    <tr><td>Bột mè đen</td><td>100g</td></tr>
+    <tr><td>Bột đậu xanh</td><td>100g</td></tr>
+    <tr><td>Bột trà xanh</td><td>100g</td></tr>
+    <tr><td>Bột đậu vàng</td><td>100g</td></tr>
+    <tr><td>Phấn hoa thông</td><td>100g</td></tr>
+    <tr><td>Mật ong</td><td>40ml</td></tr>
+    <tr><td>Gia vị</td><td>Một ít dầu mè</td></tr>
+    
+  </table>
+
+  <div class="step-box">
+    <strong>Bước 1: Làm bột bánh</strong>
+    <p>Trộn đều bột nguyên liệu các loại với mật ong trong bát nhỏ. Dùng tay hoặc thìa gỗ nhào kỹ cho đến khi bột thành một khối kết dính, mịn, không quá khô cũng không quá ướt (giống đất sét).</p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 2: Tạo hình</strong>
+    <p>Ấn bột vào khuôn đã thoa dầu để tạo hoa văn, lấy bánh ra, để khô rồi xếp lên đĩa.</p>
+  </div>
+
+  </section>
+</div>
+
+<div class="recipe-box">
+<section id="lamjeungpyeon">
+  <h3 class="recipe-title">CÁCH LÀM JEUNGPYEON</h3>
+  <h4 class="recipe-sub">❖NGUYÊN LIỆU</h4>
+  <table class="ingredients">
+    <tr><td>Bột gạo</td><td>250g</td></tr>
+    <tr><td>Rượu gạo Makgeolli</td><td>60ml</td></tr>
+    <tr><td>Nước ấm</td><td>100ml</td></tr>
+    <tr><td>Bột đậu vàng</td><td>100g</td></tr>
+    <tr><td>Men tươi</td><td>5g</td></tr>
+    <tr><td>Đường trắng</td><td>40g</td></tr>
+    <tr><td>Gia vị</td><td>Một ít dầu ăn, muối</td></tr>
+    <tr><td>Trang trí</td><td>2 quả táu tàu, một ít hạt thông, nấm đá, hạt bí.</td></tr>
+    <tr><td>Tạo màu</td><td>2g bột dành dành, 3g bột dâu tây.</td></tr>
+  </table>
+
+  <div class="step-box">
+    <strong>Bước 1: Làm bột bánh.</strong>
+    <p>Trộn rượu gạo, nước ấm, men, muối và đường vào bột gạo, phủ kín bằng màng bọc thực phẩm.</p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 2: Lên men.</strong>
+    <p> Giữ ấm tô bằng một tấm chăn dày, duy trì nhiệt độ trong vòng 40 - 45 độ C trong 2 tiếng để lên men lần thứ nhất. Sau khi bột nở, khuấy đều để đẩy không khí ra ngoài, lên men lần tiếp theo trong 1 tiếng.</p>
+  </div>
+
+  <div class="step-box">
+    <strong>Bước 3: Chuẩn bị hấp.</strong>
+    <p>Bôi dầu ăn vào khuôn, cho bột tầm 2/3 khuôn, đặt táo tàu, nấm và hạt bí ngô lên để trang trí.</p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 4: Hấp bánh.</strong>
+    <p> Đổ nước vào nồi hấp, đun nỏng trên lửa lớn, đợi khói bốc lên thì tắt bếp, đặt khuôn bánh vào nồi, để 10 phút cho bột lên men lần thứ 3. Khi bột nở một lần nữa, hấp trong 20 phút trên lửa lớn, và thêm 10 phút trên lửa nhỏ.</p>
+  </div>
+  </section>
+</div>
+
+<div class="recipe-box">
+<section id="lamsongpyeon">
+  <h3 class="recipe-title">CÁCH LÀM SONGPYEON</h3>
+  <h4 class="recipe-sub">❖NGUYÊN LIỆU</h4>
+  <table class="ingredients">
+    <tr><td>Bột gạo nếp</td><td>200g</td></tr>
+    <tr><td>Đậu xanh cả vỏ</td><td>200g</td></tr>
+    <tr><td>Đường trắng</td><td>100g</td></tr>
+    <tr><td>Nước sôi</td><td>200ml</td></tr>
+    <tr><td>Muối</td><td>2 muỗng cà phê</td></tr>
+    <tr><td>Lá thông</td><td>3 nắm</td></tr>
+  </table>
+
+  <div class="step-box">
+    <strong>Bước 1: Làm bột bánh.</strong>
+    <p>Nhào bột nếp với muối và nước ấm đến khi dẻo, bọc lại bằng màng bọc thực phẩm, ủ trong 4 tiếng.</p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 2: Làm nhân bánh.</strong>
+    <p>Ngâm đậu xanh từ 4 - 6 tiếng cho mềm, nấu nhừ rồi sên với đường ở lửa vừa đến khi đặc sệt.</p>
+  </div>
+
+ <div class="step-box">
+    <strong>Bước 3: Tạo hình.</strong>
+    <p>Cán mỏng bột bánh, gói nhân đậu vào giữa rồi tạo hình trăng khuyết.</p>
+  </div>
+
+   <div class="step-box">
+    <strong>Bước 4: Hấp bánh.</strong>
+    <p>Cho lá thông vào dưới xửng rồi hấp bánh trong 30 phút.</p>
+  </div>
+  </section>
+</div>
+
+</div>
+
+<div class="footer">❀ Tinh túy ẩm thực Á Đông ❀</div>
+
+<!-- ===== JS ===== -->
+<script>
+document.querySelectorAll(".menu-header").forEach(header=>{header.addEventListener("click",()=>{const currentItem = header.parentElement;
+        document.querySelectorAll(".menu-item").forEach(item=>{if(item !== currentItem){item.classList.remove("open");}});currentItem.classList.toggle("open");});});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {for(let i = 0; i < 40; i++){let petal = document.createElement("div");
+    petal.className = "petal"; petal.innerHTML = "❀";  petal.style.left = Math.random() * 100 + "vw"; petal.style.fontSize = 14 + Math.random() * 22 + "px"; petal.style.animationDuration = 6 + Math.random() * 6 + "s"; petal.style.animationDelay = Math.random() * 5 + "s"; document.body.appendChild(petal);}});
+</script>
+
+<button id="backToTop">⬆</button>
+
+<script>
+const backToTop = document.getElementById("backToTop");
+
+window.addEventListener("scroll", () => {if (window.scrollY > 300) {backToTop.style.display = "block";} else {backToTop.style.display = "none";}}); backToTop.addEventListener("click", () => {window.scrollTo({top: 0, behavior: "smooth"});});
+</script>
+
+</body>
+</html>

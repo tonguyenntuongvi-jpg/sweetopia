@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sweet Survey - Bunny Style</title>
+
+<style>
+:root{
+  --bg:#fdfae6;
+  --pink:#fbc2c4;
+  --paper:#fffef2;
+  --sakura:#ff8fa3;
+  --brown:#8b5e3c;
+}
+
+body{
+  background:var(--bg);
+  background-image:radial-gradient(#f1e6d2 1px,transparent 1px);
+  background-size:20px 20px;
+  font-family:monospace,serif;
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+padding-top:60px;
+
+  perspective:1500px;
+}
+
+/* ===== PHONG THƯ (GIỮ NGUYÊN) ===== */
+.envelope-wrapper{
+  width:420px;
+  height:480px; /* tăng chiều cao để chứa full khảo sát */
+  position:relative;
+  transform-style:preserve-3d;
+  transition:.8s cubic-bezier(.175,.885,.32,1.275);
+  cursor:pointer;
+}
+
+.envelope-wrapper.open{transform:rotateY(-180deg)}
+
+.face{
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
+  border:2px solid #e0c9a6;
+  border-radius:15px;
+  box-shadow:0 10px 30px rgba(0,0,0,.05);
+  background:var(--paper);
+}
+
+.front{
+  background-image:repeating-linear-gradient(
+    45deg,#fbc2c4 0,#fbc2c4 10px,
+    transparent 10px,transparent 20px);
+  background-size:100% 15px;
+  background-repeat:no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+}
+
+.stamp{
+  position:absolute;
+  top:20px;
+  right:20px;
+  width:60px;
+  height:70px;
+  border:2px dashed var(--pink);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+}
+
+.back{
+  transform:rotateY(180deg);
+  padding:25px;
+  color:var(--brown);
+}
+
+/* ===== TRÁI TIM ĐÁNH GIÁ (APP STORE) ===== */
+.heart-rating{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin:12px 0;
+}
+.heart{
+  font-size:28px;
+  cursor:pointer;
+  color:white;
+  -webkit-text-stroke:1.5px var(--pink);
+}
+.heart.active{
+  color:var(--pink);
+}
+
+/* ===== BUTTON ===== */
+.submit-btn{
+  width:100%;
+  padding:10px;
+  background:var(--pink);
+  border:none;
+  border-radius:25px;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* ===== THƯ CẢM ƠN ===== */
+#thank-letter{
+  display:none;
+  background:var(--paper);
+  padding:50px 60px;
+  border-radius:15px;
+  box-shadow:0 15px 40px rgba(0,0,0,.15);
+  text-align:center;
+  animation:openPaper .8s ease forwards;
+  margin-top:30px;
+}
+@keyframes openPaper{
+  from{transform:scaleY(.2);opacity:0}
+  to{transform:scaleY(1);opacity:1}
+}
+
+/* ===== HOA RƠI ===== */
+.confetti{
+  position:fixed;
+  width:10px;
+  height:10px;
+  background:var(--sakura);
+  animation:fall 3s linear infinite;
+}
+@keyframes fall{
+  from{transform:translateY(-10vh) rotate(0)}
+  to{transform:translateY(110vh) rotate(360deg)}
+}
+
+/* ===== FOOTER ===== */
+footer{
+  margin-top:60px;   /* tạo khoảng cách với lá thư */
+  padding-bottom:40px;
+  text-align:center;
+}
+
+.back-home{
+  display:inline-block;
+  padding:12px 28px;
+  background:linear-gradient(135deg,#fbc2c4,#ffd6d9);
+  border-radius:30px;
+  color:var(--brown);
+  font-weight:bold;
+  text-decoration:none;
+  box-shadow:0 6px 20px rgba(0,0,0,.12);
+}
+.footer-text{
+  margin-top:15px;
+  font-size:.85rem;
+  color:var(--brown);
+  opacity:.85;
+}
+/* ===== KHẢO SÁT HƯƠNG VỊ NGỌT ===== */
+.sweet-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:12px 0;
+}
+
+.sweet-option{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  cursor:pointer;
+  font-size:.9rem;
+  color:var(--brown);
+}
+
+.sweet-option input{
+  display:none;
+}
+
+.sweet-box{
+  width:24px;
+  height:24px;
+  border:2px solid var(--pink);
+  border-radius:6px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:.3s;
+}
+
+.sweet-box::after{
+  content:"♥";
+  color:transparent;
+  font-size:16px;
+}
+
+.sweet-option input:checked + .sweet-box{
+  background:var(--pink);
+}
+
+.sweet-option input:checked + .sweet-box::after{
+  color:white;
+}
+/*nút back to top*/
+#backToTop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: #fbc2c4; /* Hồng pastel như Petit Patisse */
+    border: 3px solid #5b7052; /* Viền xanh rêu đậm Octonauts */
+    border-radius: 50%;
+    cursor: pointer;
+    display: none; /* Ẩn đi khi ở đầu trang */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 4px 4px 0px #5b7052; /* Đổ bóng cứng phong cách tranh vẽ */
+}
+
+#backToTop .icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+#backToTop .text {
+    font-size: 10px;
+    font-weight: bold;
+    color: #5b7052;
+    margin-top: 2px;
+}
+
+/* Hiệu ứng khi di chuột vào */
+#backToTop:hover {
+    transform: translateY(-5px); /* Nhấc nhẹ lên */
+    background-color: #ff8fa3;
+    box-shadow: 6px 6px 0px #5b7052;
+}
+
+/* Hiệu ứng khi nhấn */
+#backToTop:active {
+    transform: translateY(2px);
+    box-shadow: 0px 0px 0px #5b7052;
+}
+  /* ===== CURSOR ===== */
+        *, *::before, *::after {
+            cursor: url("https://raw.githubusercontent.com/khuccanhthien-byte/Hoamai/refs/heads/main/Vi-cursor.png") 16 16, auto !important;}
+
+</style>
+</head>
+
+<body>
+
+
+<div class="envelope-wrapper" id="mail" onclick="toggleMail()">
+  <div class="face front">
+    <div class="stamp">🧁</div>
+    <div style="border:2px solid var(--brown);padding:15px;border-radius:10px">
+      <h3 style="margin:0">NLVH X IIIU</h3>
+      <p style="font-size:.8rem">(Nhấn để mở thư)</p>
+    </div>
+  </div>
+
+  <div class="face back" onclick="event.stopPropagation()">
+    <h2>Sweet Survey</h2>
+
+    <p>Món ngọt bạn yêu thích:</p>
+    <input style="width:100%;padding:8px;border-radius:5px;border:1px solid #ddd">
+    <p style="font-size:0.85rem;margin-top:15px;">
+  Hương vị ngọt bạn thích:
+</p>
+
+<div class="sweet-grid">
+  <label class="sweet-option">
+    <input type="radio" name="sweet">
+    <div class="sweet-box"></div>
+    Ít ngọt
+  </label>
+
+  <label class="sweet-option">
+    <input type="radio" name="sweet">
+    <div class="sweet-box"></div>
+    Ngọt thanh
+  </label>
+
+  <label class="sweet-option">
+    <input type="radio" name="sweet">
+    <div class="sweet-box"></div>
+    Ngọt vừa
+  </label>
+
+  <label class="sweet-option">
+    <input type="radio" name="sweet">
+    <div class="sweet-box"></div>
+    Siêu ngọt
+  </label>
+</div>
+
+
+    <p>Đánh giá cho chúng tớ 🎀:</p>
+    <div class="heart-rating">
+      <span class="heart" onclick="rate(1)">♥</span>
+      <span class="heart" onclick="rate(2)">♥</span>
+      <span class="heart" onclick="rate(3)">♥</span>
+      <span class="heart" onclick="rate(4)">♥</span>
+      <span class="heart" onclick="rate(5)">♥</span>
+    </div>
+
+    <button class="submit-btn" onclick="submitSurvey()">Gửi khảo sát 🎀</button>
+  </div>
+</div>
+
+<div id="thank-letter">
+  <h2>💌 Thư Cảm Ơn</h2>
+  <p>
+    Cảm ơn bạn đã dành thời gian<br>
+    gửi những điều ngọt ngào đến website nhỏ này của chúng tớ 🌷<br><br>
+    Chúc bạn luôn có những khoảnh khắc<br>
+    dịu dàng như chiếc bánh mới ra lò.
+  </p>
+</div>
+
+<footer>
+  <a href="index.html" class="back-home">⬅ Quay về trang chính</a>
+  <div class="footer-text">
+    cảm ơn bạn đã ghé đến website của chúng tớ – <b>Lvnhiiiu</b>
+  </div>
+</footer>
+
+<script>
+let currentRating=0;
+
+function toggleMail(){
+  document.getElementById('mail').classList.toggle('open');
+}
+
+function rate(n){
+  currentRating=n;
+  document.querySelectorAll('.heart').forEach((h,i)=>{
+    h.classList.toggle('active',i<n);
+  });
+}
+
+function submitSurvey(){
+  const mail=document.getElementById('mail');
+  mail.classList.remove('open');
+  setTimeout(()=>{
+    mail.style.display='none';
+    document.getElementById('thank-letter').style.display='block';
+    petals();
+  },800);
+}
+
+function petals(){
+  for(let i=0;i<40;i++){
+    const p=document.createElement('div');
+    p.className='confetti';
+    p.style.left=Math.random()*100+'vw';
+    p.style.animationDelay=Math.random()*2+'s';
+    document.body.appendChild(p);
+  }
+}
+
+
+</script>
+<button id="backToTop" title="Lên đầu trang">
+    <span class="icon">🌸</span>
+    <div class="text">TOP</div>
+</button>
+</body>
+</html>
+

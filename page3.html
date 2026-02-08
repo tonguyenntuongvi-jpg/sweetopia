@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bánh Ngọt Việt Nam - Mỹ Vị Hữu Danh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Roboto+Slab:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --indochine-teal: #1a4d4e;    /* Xanh mòng két đậm */
+            --mustard-yellow: #e5b142;   /* Vàng mù tạt */
+            --coral-red: #b94a3a;        /* Đỏ son trầm */
+            --light-green: #9fb057;      /* Xanh lá mạ */
+            --paper-beige: #f1e4c9;      /* Giấy bản cũ */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--indochine-teal);
+            color: var(--indochine-teal);
+            font-family: 'Noto Serif', serif;
+            line-height: 1.8;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Canvas cho sao rơi và hiệu ứng nổ */
+        #effectCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999; /* Đưa lên trên để thấy hiệu ứng nổ nhưng không chặn click */
+            pointer-events: none;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Roboto Slab', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 50px auto;
+            background-color: var(--paper-beige);
+            padding: 60px;
+            border: 4px solid var(--mustard-yellow);
+            position: relative;
+            box-shadow: 15px 15px 0px var(--coral-red);
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 5px double var(--indochine-teal);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: var(--indochine-teal);
+            text-shadow: 3px 3px 0px var(--mustard-yellow);
+            line-height: 1.2;
+        }
+
+        .region-section {
+            margin-bottom: 50px;
+        }
+
+        .region-title {
+            background-color: var(--coral-red);
+            color: var(--paper-beige);
+            display: inline-block;
+            padding: 5px 25px;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            clip-path: polygon(0% 0%, 95% 0%, 100% 50%, 95% 100%, 0% 100%);
+        }
+
+        .cake-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 35px;
+            border-left: 3px solid var(--light-green);
+            padding-left: 20px;
+        }
+
+        .cake-content {
+            flex: 1;
+        }
+
+        .cake-item strong {
+            color: var(--coral-red);
+            font-family: 'Roboto Slab', serif;
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .cake-item img {
+            width: 150px;
+            height: 150px;
+            border-radius: 30%;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 2px solid var(--mustard-yellow);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .cake-item img:hover { transform: scale(1.05); }
+
+        .recipe-box {
+            background-color: var(--indochine-teal);
+            color: var(--paper-beige);
+            padding: 40px;
+            margin-top: 50px;
+            border: 2px solid var(--mustard-yellow);
+        }
+
+        .recipe-box h2 {
+            color: var(--mustard-yellow);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .ingredients-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .ingredients-table td {
+            padding: 8px;
+            border-bottom: 1px solid rgba(241, 228, 201, 0.2);
+        }
+
+        .ingredients-table td:first-child {
+            font-weight: bold;
+            color: var(--mustard-yellow);
+        }
+
+        .recipe-step-wrapper {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .step {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .step b {
+            color: var(--mustard-yellow);
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid var(--mustard-yellow);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .image-grid img:hover { transform: scale(1.05); }
+
+        .stamp {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            width: 110px;
+            height: 110px;
+            border: 3px double var(--coral-red);
+            color: var(--coral-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: bold;
+            transform: rotate(15deg);
+            border-radius: 50%;
+            font-size: 1.1rem;
+            opacity: 0.7;
+            z-index: 10;
+        }
+
+        .final-section {
+            text-align: center;
+            margin-top: 30px;
+            border-top: 1px dashed var(--mustard-yellow);
+            padding-top: 20px;
+        }
+
+        .final-img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 3px solid var(--mustard-yellow);
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.2rem;
+            letter-spacing: 5px;
+            color: var(--paper-beige);
+            padding-bottom: 50px;
+            opacity: 0.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .image-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: zoom-out;
+        }
+        .image-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            border: 5px solid white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            animation: zoomIn 0.3s ease;
+        }
+
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--coral-red);
+            color: var(--mustard-yellow);
+            border: 2px solid var(--mustard-yellow);
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 100;
+            box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        @keyframes zoomIn { from {transform: scale(0.5); opacity: 0;} to {transform: scale(1); opacity: 1;} }
+
+        @media (max-width: 600px) {
+            .cake-item { flex-direction: column; }
+            .cake-item img { width: 100%; height: 200px; order: -1; }
+            .container { padding: 20px; }
+            .image-grid { max-width: 100%; }
+        }
+        .back-home a {
+  color: #fff;
+  background: #e74c3c;
+  padding: 10px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+.nav-home {
+  margin: 20px;
+}
+
+.nav-home ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.back-home {
+  display: inline-block;
+  padding: 10px 18px;
+  background: #ddb656; /* hồng pastel dịu */
+  color: #f2e4c8; /* chữ nâu hồng nhẹ, đọc êm */
+  border-radius: 14px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+/* hover nhẹ nhàng */
+.back-home:hover {
+  background: rgba(246, 170, 173, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+/* ===== CURSOR ===== */
+        *, *::before, *::after {
+            cursor: url("https://raw.githubusercontent.com/khuccanhthien-byte/Hoamai/refs/heads/main/optimized-image.jpeg") 16 16, auto !important;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-home">
+  <ul>
+    <li>
+      <a href="index.html" class="back-home">⬅ Quay về trang chủ</a>
+    </li>
+  </ul>
+</nav>
+    <canvas id="effectCanvas"></canvas>
+
+    <button id="backToTop" title="Lên đầu trang" onclick="scrollToTop()">↑</button>
+
+    <div class="container" data-aos="fade-up" data-aos-duration="1000">
+        <div class="stamp">HỮU DANH <br> MỸ VỊ </div>
+        
+        <header data-aos="zoom-in" data-aos-delay="200">
+            <h1>Bánh Ngọt Việt Nam</h1>
+            <p style="letter-spacing: 5px; font-weight: bold; color: var(--light-green); margin-top: 10px; text-transform: uppercase;">Các loại bánh dân gian</p>
+        </header>
+
+        <section data-aos="fade-up">
+            <h2 style="color: var(--coral-red); font-size: 1.5rem; margin-bottom: 10px;">Nguồn Gốc</h2>
+            <p>Gắn liền với nền văn hóa nông nghiệp lúa nước, thường sử dụng nguyên liệu gần gũi như bột nếp, đậu xanh, đường, lá chuối, lá gai. Mỗi miền đều có các loại bánh mang đặc trưng riêng của vùng đó.</p>
+        </section>
+
+        <div class="region-section">
+            <h3 class="region-title" data-aos="fade-right">Miền Bắc</h3>
+            <div class="cake-item" data-aos="fade-left">
+                <div class="cake-content">
+                    <strong>Bánh Cốm</strong>
+                    <p>Có vỏ làm từ cốm nếp xào dẻo, nhân đậu xanh, dừa nạo và mứt sen bùi ngọt thường dùng trong cưới hỏi.</p>
+                </div>
+                <img src="https://static.vinwonders.com/production/9Eo0HZBa-banh-com-ha-noi-1.jpg" alt="Bánh Cốm" onclick="openLightbox(this)">
+            </div>
+            <div class="cake-item" data-aos="fade-right">
+                <div class="cake-content">
+                    <strong>Bánh Gai</strong>
+                    <p>Có màu đen đặc trưng từ lá gai, vỏ dẻo dai, nhân trộn đỗ xanh, dừa, hạt sen, mứt bí, mang vị ngọt đậm đà.</p>
+                </div>
+                <img src="https://cdn-i.vtcnews.vn/resize/th/upload/2023/04/20/banhgai2-22130580.png" alt="Bánh Gai" onclick="openLightbox(this)">
+            </div>
+            <div class="cake-item" data-aos="fade-right">
+                <div class="cake-content">
+                    <strong>Bánh Xu Xê (Phu Thê)</strong>
+                    <p>Vỏ bánh trong suốt, dai giòn làm từ bột năng/bột lọc, nhân đậu xanh dừa nạo. Tượng trưng cho tình nghĩa vợ chồng.</p>
+                </div>
+                <img src="https://bizweb.dktcdn.net/100/463/582/files/banh-xu-xe-ngu-sac-2446fe2d-4454-4f53-816f-6c9eb7a7c1fb.jpg?v=1711207796508" alt="Bánh Xu Xê" onclick="openLightbox(this)">
+            </div>
+            <div class="cake-item" data-aos="fade-right">
+                <div class="cake-content">
+                    <strong>Bánh Nhãn </strong>
+                    <p>Viên bánh nhỏ, giòn rụm làm từ nếp, trứng gà, bao đường, vị ngọt thơm.</p>
+                </div>
+                <img src="https://www.huongnghiepaau.com/wp-content/uploads/2019/08/thanh-pham-nho-xinh-ngot-ngao.jpg" alt="Bánh Nhãn" onclick="openLightbox(this)">
+            </div>
+        </div>
+
+        <div class="region-section">
+            <h3 class="region-title" data-aos="fade-right">Miền Trung</h3>
+            <div class="cake-item" data-aos="fade-left">
+                <div class="cake-content">
+                    <strong>Bánh đậu xanh trái cây</strong>
+                    <p>Món bánh cầu kỳ, tạo hình giống các loại trái cây nhỏ, có nguồn gốc từ cung đình, được làm từ đậu xanh.</p>
+                </div>
+                <img src="https://daylambanh.edu.vn/wp-content/uploads/2020/04/tao-hinh-banh-trai-cay-510x340.jpg" alt="Bánh đậu xanh trái cây" onclick="openLightbox(this)">
+            </div>
+            <div class="cake-item" data-aos="fade-right">
+                <div class="cake-content">
+                    <strong>Kẹo Cu Đơ </strong>
+                    <p>Đặc sản Hà Tĩnh với vỏ bánh tráng giòn, nhân đậu phộng (lạc) và mật mía, ăn rất đậm đà.</p>
+                </div>
+                <img src="https://static.vinwonders.com/production/nguon-goc-keo-cu-do-o-ha-tinh.jpeg" alt="Kẹo Cu Đơ" onclick="openLightbox(this)">
+            </div>
+            <div class="cake-item" data-aos="fade-right">
+                <div class="cake-content">
+                    <strong>Mè Xửng</strong>
+                    <p>Đặc sản nổi tiếng xứ Huế, làm từ mè và đường mạch nha, có độ dẻo, thơm béo đặc trưng.</p>
+                </div>
+                <img src="https://static.vinwonders.com/production/me-xung-hue-01.jpg" alt="Mè xửng" onclick="openLightbox(this)">
+            </div>
+            <div class="cake-item" data-aos="fade-right">
+                <div class="cake-content">
+                    <strong>Bánh Phục Linh </strong>
+                    <p>Bánh làm từ bột năng/bột bình tinh, nước cốt dừa, có vị ngọt dịu và thơm mùi lá dứa.</p>
+                </div>
+                <img src="https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/2023_10_25_638338614818886345_5af05-b19-1.jpg" alt="Bánh Phục Linh" onclick="openLightbox(this)">
+            </div>
+        </div>
+
+        <div class="region-section">
+            <h3 class="region-title" data-aos="fade-right">Miền Nam</h3>
+            <div class="cake-item" data-aos="fade-left">
+                <div class="cake-content">
+                    <strong>Bánh Da Lợn</strong>
+                    <p>Món bánh đặc trưng với các lớp bột năng, đậu xanh, lá dứa xen kẽ, mềm dẻo và thơm béo.</p>
+                </div>
+                <img src="https://cdn.tgdd.vn/Files/2019/03/08/1153592/cach-lam-banh-da-lon-deo-ngon-bui-bui-nhu-mua-ngoai-hang-202112031617559658.jpg" alt="Bánh da lợn" onclick="openLightbox(this)">
+            </div>
+            <div class="cake-item" data-aos="fade-right">
+                <div class="cake-content">
+                    <strong>Bánh Bò Thốt Nốt</strong>
+                    <p>Đặc sản vùng An Giang, có màu vàng ươm, xốp phồng và vị ngọt thanh từ đường thốt nốt.</p>
+                </div>
+                <img src="https://cdn.tgdd.vn/Files/2021/09/16/1383197/cach-lam-banh-bo-thot-not-nuong-mem-dai-chuan-vi-202201170959325828.jpg" alt="Bánh bò thốt nốt" onclick="openLightbox(this)">
+            </div>
+            <div class="cake-item" data-aos="fade-right">
+                <div class="cake-content">
+                    <strong>Bánh Cam, Bánh Còng</strong>
+                    <p>Món ăn vặt chiên giòn, nhân đậu xanh, vỏ ngoài phủ đường thắng hoặc mè.</p>
+                </div>
+                <img src="https://cdn.tgdd.vn/2021/03/CookProduct/1200-1200x676-72.jpg" alt="Bánh Cam Bánh Còng" onclick="openLightbox(this)">
+            </div>
+            <div class="cake-item" data-aos="fade-right">
+                <div class="cake-content">
+                    <strong>Bánh Tiêu</strong>
+                    <p>Bánh tiêu được biến tấu với vỏ rỗng, chiên giòn, vị ngọt nhẹ, thơm mùi mè (vừng).</p>
+                </div>
+                <img src="https://cdn.tgdd.vn/Files/2020/11/17/1307477/bi-kip-chien-banh-tieu-cang-phong-vang-uom-khong-bi-rot-me-202011180909588168.jpg" alt="Bánh Tiêu" onclick="openLightbox(this)">
+            </div>
+        </div>
+
+        <section class="recipe-box" data-aos="zoom-in">
+            <h2>II. CÔNG THỨC LÀM BÁNH TAI HEO</h2>
+            <p style="font-style: italic; margin-bottom: 25px; text-align: center; opacity: 0.9;">
+                Món quà vặt giòn tan - Gói trọn ký ức tuổi thơ.
+            </p>
+
+            <h3 style="color: var(--mustard-yellow); font-size: 1.1rem; margin-bottom: 15px;">Nguyên liệu</h3>
+            <table class="ingredients-table" data-aos="fade-up">
+                <tr><td>Bột mì đa dụng</td><td>170 gr</td></tr>
+                <tr><td>Bột ca cao</td><td>1 muỗng cà phê</td></tr>
+                <tr><td>Bơ lạt & Sữa tươi</td><td>20gr - 40ml</td></tr>
+                <tr><td>Trứng gà</td><td>1 lòng đỏ</td></tr>
+                <tr><td>Gia vị</td><td>Đường, muối, dầu ăn</td></tr>
+            </table>
+
+            <div class="recipe-step-wrapper" data-aos="fade-up">
+                <div class="step">
+                    <b>Bước 1: Nhào bột.</b> Trộn bột mì, đường, muối, lòng đỏ trứng, sữa và bơ. Nhào đến khi khối bột dẻo mịn, không dính tay.
+                </div>
+                <div class="image-grid">
+                    <img src="https://cdn.tgdd.vn/2021/01/CookRecipe/GalleryStep/nhao-bot-3.jpg" onclick="openLightbox(this)">
+                    <img src="https://cdn.tgdd.vn/2021/01/CookRecipe/GalleryStep/nhao-bot-4.jpg" onclick="openLightbox(this)">
+                    <img src="https://cdn.tgdd.vn/2021/01/CookRecipe/GalleryStep/nhao-bot-5.jpg" onclick="openLightbox(this)">
+                    <img src="https://cdn.tgdd.vn/2021/01/CookRecipe/GalleryStep/nhao-bot-6.jpg" onclick="openLightbox(this)">
+                </div>
+            </div>
+
+            <div class="recipe-step-wrapper" data-aos="fade-up">
+                <div class="step">
+                    <b>Bước 2: Tạo hình.</b> Chia bột làm 2 phần (trắng & cacao). Cán mỏng, chồng lên nhau rồi cuộn chặt. Để ngăn đông 1 tiếng cho bột cứng lại.
+                </div>
+                <div class="image-grid">
+                    <img src="https://cdn.tgdd.vn/2021/01/CookRecipe/GalleryStep/can-bot-4.jpg" onclick="openLightbox(this)">
+                    <img src="https://cdn.tgdd.vn/2021/01/CookRecipe/GalleryStep/can-bot-6.jpg" onclick="openLightbox(this)">
+                    <img src="https://cdn.tgdd.vn/2021/01/CookRecipe/GalleryStep/can-bot-5.jpg" onclick="openLightbox(this)">
+                    <img src="https://cdn.tgdd.vn/2021/01/CookRecipe/GalleryStep/can-bot-7.jpg" onclick="openLightbox(this)">
+                </div>
+            </div>
+
+            <div class="recipe-step-wrapper" data-aos="fade-up">
+                <div class="step">
+                    <b>Bước 3 & 4: Cắt & Chiên.</b> Cắt khối bột thành lát mỏng. Đun nóng dầu rồi chiên ở lửa vừa đến khi bánh chín vàng đều, tỏa mùi thơm.
+                </div>
+                <div class="image-grid">
+                    <img src="https://cdn.tgdd.vn/2021/01/CookRecipe/GalleryStep/cat-bot.jpg" onclick="openLightbox(this)">
+                    <img src="https://cdn.tgdd.vn/2021/01/CookRecipe/GalleryStep/cat-bot-1.jpg" onclick="openLightbox(this)">
+                    <img src="https://cdn.tgdd.vn/2021/01/CookRecipe/GalleryStep/chien-banh-8.jpg" onclick="openLightbox(this)">
+                    <img src="https://cdn.tgdd.vn/2021/01/CookRecipe/GalleryStep/chien-banh-9.jpg" onclick="openLightbox(this)">
+                </div>
+            </div>
+
+            <div class="final-section" data-aos="zoom-in">
+                <h3 style="color: var(--mustard-yellow);">Thành Phẩm</h3>
+                <p>Bánh tai heo giòn rụm, thơm mùi bơ và cacao.</p>
+                <img src="https://cdn.tgdd.vn/2021/01/CookRecipe/GalleryStep/thanh-pham-971.jpg" class="final-img" alt="Thành phẩm bánh tai heo" onclick="openLightbox(this)">
+            </div>
+        </section>
+    </div>
+
+    <footer data-aos="fade-up">
+        Tự hào nền ẩm thực Việt Nam - 2026
+    </footer>
+
+    <div id="lightbox" class="image-overlay" onclick="closeLightbox()">
+        <img id="lightbox-img" src="">
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // 1. Khởi tạo hiệu ứng cuộn AOS
+        AOS.init({ once: true });
+
+        // 2. Hiệu ứng xem ảnh Lightbox
+        function openLightbox(img) {
+            document.getElementById('lightbox-img').src = img.src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        // 3. Hệ thống Hạt (Particles) cho Sao rơi và Hiệu ứng Nổ
+        const canvas = document.getElementById('effectCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        let particles = [];
+        const colors = ['#e5b142', '#b94a3a', '#9fb057', '#f1e4c9']; // Mustard, Coral, Green, Beige
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Khởi tạo sao rơi
+        for(let i=0; i<100; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2,
+                speed: Math.random() * 0.5 + 0.1
+            });
+        }
+
+        // Lớp Particle cho hiệu ứng nổ
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 8 + 2;
+                this.speedX = Math.random() * 6 - 3;
+                this.speedY = Math.random() * 6 - 3;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.opacity = 1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.1;
+                this.opacity -= 0.01;
+            }
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Kích hoạt nổ khi click
+        window.addEventListener('click', (e) => {
+            for (let i = 0; i < 20; i++) {
+                particles.push(new Particle(e.clientX, e.clientY));
+            }
+        });
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.globalAlpha = 1;
+
+            // Vẽ sao rơi
+            ctx.fillStyle = "rgba(229, 177, 66, 0.4)";
+            stars.forEach(s => {
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fill();
+                s.y += s.speed;
+                if (s.y > canvas.height) s.y = -5;
+            });
+
+            // Vẽ hiệu ứng nổ
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].opacity <= 0) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // 4. Nút Back To Top
+        const bttButton = document.getElementById("backToTop");
+        window.onscroll = function() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                bttButton.style.display = "flex";
+            } else {
+                bttButton.style.display = "none";
+            }
+        };
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</div>
+</body>
+</html>
