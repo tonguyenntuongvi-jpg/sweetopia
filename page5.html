@@ -26,6 +26,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
         }
 
         /* --- 2. KHUNG CHÍNH (RESPONSIVE) --- */
@@ -162,9 +163,10 @@
 
         /* --- 8. NÚT QUAY VỀ & BACK TO TOP --- */
         .back-home-container {
+            margin-bottom: 10px;
+            margin-top: 30px;
             width: 100%;
             max-width: 900px;
-            margin-bottom: 10px;
             display: flex;
             justify-content: flex-start;
         }
@@ -213,9 +215,63 @@
             letter-spacing: 3px;
             color: var(--border-dark);
         }
+
+/* ===== MUSIC BUTTON ===== */
+#music-box{
+  position: absolute;     
+  right: 190px;    
+  display: flex;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 14px;
+  background: #C6D1A3;
+  border: 3px solid #556b45;
+  box-shadow: 4px 4px 0 #556b45;
+
+  cursor: pointer;
+}
+
+/* hover comic */
+#music-box:hover{
+  box-shadow: 2px 2px 0 #556b45;
+  transform: translate(1px,1px);
+}
+
+
+
+/* ICON EMOJI (đứng yên) */
+.disc{
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* TEXT */
+.music-text{
+  font-family: 'Charm', cursive;
+  font-size: 15px;
+  letter-spacing: 2px;
+  color: #3e4f34;
+}
+
+/* TEXT */
+.music-text{
+  font-family: 'Charm', cursive;
+  font-size: 15px;
+  letter-spacing: 2px;
+  color: #3e4f34;
+}
+
     </style>
 </head>
 <body>
+
+<!-- NÚT NHẠC -->
+        <div id="music-box" onclick="toggleMusic()">
+    <div class="disc">💿</div>
+    <span class="music-text" id="music-text">MUSIC</span>
+        </div>
 
     <div class="back-home-container">
         <a href="index.html" class="btn-back">
@@ -244,7 +300,7 @@
                 <div class="card-header"><span>00. VIDEO DOCUMENTARY</span><span>LOCAL PLAYER</span></div>
                 <div class="card-body" style="padding: 10px;">
                     <video controls style="width: 100%; border: 1px solid var(--border-dark); display: block;">
-                        <source src="sweet.mp4" type="video/mp4">
+                        <source src="global-sugar - Shortcut.lnk" type="video/mp4">
                         Trình duyệt của cậu không hỗ trợ xem video trực tiếp.
                     </video>
                     <p style="font-size: 0.75rem; text-align: center; margin-top: 10px; font-style: italic; color: var(--border-dark);">
@@ -330,6 +386,64 @@
         <img src="https://raw.githubusercontent.com/khuccanhthien-byte/Hoamai/refs/heads/main/back-to-top.jpeg" width="45" height="45" alt="top" style="border-radius: 50%; border: 2px solid var(--border-dark);" />
     </a>
 
+<audio id="bg-music" loop>
+  <source src="https://github.com/khuccanhthien-byte/Hoamai/raw/refs/heads/main/Luv%20Letter.mp3" type="audio/mpeg">
+</audio>
+
+
+
+<audio id="bg-music" loop>
+  <source src="https://github.com/khuccanhthien-byte/Hoamai/raw/refs/heads/main/Luv%20Letter.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const music = document.getElementById("bg-music");
+const box = document.getElementById("music-box");
+const text = document.getElementById("music-text");
+
+// volume dịu
+music.volume = 0.35;
+
+// khôi phục trạng thái
+window.addEventListener("load", () => {
+  const isPlaying = localStorage.getItem("musicPlaying");
+  const currentTime = localStorage.getItem("musicTime");
+
+  if(currentTime){
+    music.currentTime = parseFloat(currentTime);
+  }
+
+  if(isPlaying === "true"){
+    music.play().catch(()=>{});
+    text.innerText = "ĐANG PHÁT";
+  }else{
+    text.innerText = "MUSIC";
+  }
+});
+
+// lưu thời gian mỗi 500ms
+setInterval(() => {
+  if(!music.paused){
+    localStorage.setItem("musicTime", music.currentTime);
+  }
+}, 500);
+
+// toggle
+function toggleMusic(){
+  if(music.paused){
+    music.play();
+    text.innerText = "ĐANG PHÁT";
+    localStorage.setItem("musicPlaying","true");
+  }else{
+    music.pause();
+    text.innerText = "MUSIC";
+    localStorage.setItem("musicPlaying","false");
+  }
+}
+</script>
+
+
+
     <script>
         function createDrop() {
             const drop = document.createElement('div');
@@ -346,5 +460,7 @@
     </script>
 </body>
 </html>
+
+
 
 
