@@ -323,8 +323,54 @@
         *, *::before, *::after {
             cursor: url("https://raw.githubusercontent.com/khuccanhthien-byte/Hoamai/refs/heads/main/optimized-image.jpeg") 16 16, auto !important;
         }
-    </style>
+
+/* ===== NÚT NHẠC - BÁNH NGỌT VIỆT ===== */
+#music-btn{
+  position: fixed;
+  top: 22px;
+  right: 22px;
+  z-index: 9999;
+
+  padding: 8px 14px;
+  min-width: 90px;
+
+  background: #f3e7c9;          /* nền giấy vàng */
+  color: #1f4f4a;               /* xanh trầm */
+
+  border: 2px solid #cfa64b;    /* viền vàng */
+  border-radius: 12px;          /* bo góc */
+
+  font-family: "Georgia", serif;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+
+  box-shadow:
+    inset 0 0 0 1px #fff6dd,
+    0 4px 10px rgba(0,0,0,0.25);
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+#music-btn:hover{
+  background: #f8efd8;
+  transform: translateY(-2px);
+}
+
+#music-btn.playing{
+  background: #1f4f4a;          /* xanh đậm khi phát */
+  color: #ffe9a8;               /* chữ vàng nhạt */
+  border-color: #e1b95a;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.35),
+    0 0 12px rgba(255,233,168,0.6);
+}
+
+</style>
+
 </head>
+
 <body>
     <nav class="nav-home">
   <ul>
@@ -513,6 +559,13 @@
         <img id="lightbox-img" src="">
     </div>
 
+<!-- NÚT NHẠC -->
+<button id="music-btn" onclick="toggleMusic()">♫ Nhạc</button>
+
+<audio id="bg-music" loop>
+  <source src="https://github.com/khuccanhthien-byte/Hoamai/raw/refs/heads/main/Luv%20Letter.mp3" type="audio/mpeg">
+</audio>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         // 1. Khởi tạo hiệu ứng cuộn AOS
@@ -624,6 +677,58 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
+
+ <script>
+const music = document.getElementById("bg-music");
+const btn = document.getElementById("music-btn");
+
+// âm lượng dịu
+music.volume = 0.35;
+
+// khi load trang
+window.addEventListener("load", () => {
+  const isPlaying = localStorage.getItem("musicPlaying");
+  const currentTime = localStorage.getItem("musicTime");
+
+  if (currentTime) {
+    music.currentTime = parseFloat(currentTime);
+  }
+
+  if (isPlaying === "true") {
+    music.play().catch(() => {});
+    btn.textContent = "❚❚ Đang phát";
+    btn.classList.add("playing");
+  } else {
+    btn.textContent = "♫ Nhạc";
+    btn.classList.remove("playing");
+  }
+});
+
+// lưu thời gian nhạc
+setInterval(() => {
+  if (!music.paused) {
+    localStorage.setItem("musicTime", music.currentTime);
+  }
+}, 500);
+
+// bật / tắt nhạc
+function toggleMusic(){
+  if (music.paused) {
+    music.play();
+    btn.textContent = "❚❚ Đang phát";
+    btn.classList.add("playing");
+    localStorage.setItem("musicPlaying", "true");
+  } else {
+    music.pause();
+    btn.textContent = "♫ Nhạc";
+    btn.classList.remove("playing");
+    localStorage.setItem("musicPlaying", "false");
+  }
+}
+</script>
+   
 </div>
 </body>
 </html>
+
+
