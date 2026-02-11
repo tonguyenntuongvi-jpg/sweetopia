@@ -258,6 +258,50 @@ footer{
         *, *::before, *::after {
             cursor: url("https://raw.githubusercontent.com/khuccanhthien-byte/Hoamai/refs/heads/main/Vi-cursor.png") 16 16, auto !important;}
 
+#music-pill{
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 18px;
+  background: #fbc2c4;      /* hồng nhạt */
+  color: #8b5e3c;           /* nâu */
+
+  font-family: monospace;
+  font-size: 14px;
+  font-weight: bold;
+
+  border-radius: 999px;     /* pill */
+  box-shadow: 3px 3px 0 #8b5e3c;
+  cursor: pointer;
+
+  transition: all .15s ease;
+}
+
+#music-pill:hover{
+  transform: translate(-1px,-1px);
+  box-shadow: 4px 4px 0 #8b5e3c;
+}
+
+#music-pill:active{
+  transform: translate(1px,1px);
+  box-shadow: 1px 1px 0 #8b5e3c;
+}
+
+#music-pill.playing{
+  background: #f2aeb6; /* hồng đậm hơn khi đang phát */
+}
+
+#music-icon{
+  font-size: 16px;
+}
+
+
 </style>
 </head>
 
@@ -339,6 +383,66 @@ footer{
   </div>
 </footer>
 
+<!-- NÚT NHẠC -->
+<div id="music-pill" onclick="toggleMusic()">
+  <span id="music-icon">♪</span>
+  <span class="music-text">Music</span>
+</div>
+
+<audio id="bg-music" loop>
+  <source src="https://github.com/khuccanhthien-byte/Hoamai/raw/refs/heads/main/Luv%20Letter.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const music = document.getElementById("bg-music");
+const pill  = document.getElementById("music-pill");
+const icon  = document.getElementById("music-icon");
+
+/* volume dịu */
+music.volume = 0.35;
+
+/* khôi phục trạng thái */
+window.addEventListener("load", () => {
+  const playing = localStorage.getItem("musicPlaying");
+  const time = localStorage.getItem("musicTime");
+
+  if(time){
+    music.currentTime = parseFloat(time);
+  }
+
+  if(playing === "true"){
+    music.play().catch(()=>{});
+    pill.classList.add("playing");
+    icon.textContent = "❚❚";
+  }else{
+    icon.textContent = "♪";
+  }
+});
+
+/* lưu thời gian khi đang phát */
+music.addEventListener("timeupdate", () => {
+  if(!music.paused){
+    localStorage.setItem("musicTime", music.currentTime);
+  }
+});
+
+/* bật / tắt nhạc */
+function toggleMusic(){
+  if(music.paused){
+    music.play().catch(()=>{});
+    pill.classList.add("playing");
+    icon.textContent = "❚❚";
+    localStorage.setItem("musicPlaying","true");
+  }else{
+    music.pause();
+    pill.classList.remove("playing");
+    icon.textContent = "♪";
+    localStorage.setItem("musicPlaying","false");
+    localStorage.setItem("musicTime", music.currentTime);
+  }
+}
+</script>
+
 <script>
 let currentRating=0;
 
@@ -381,4 +485,5 @@ function petals(){
 </button>
 </body>
 </html>
+
 
