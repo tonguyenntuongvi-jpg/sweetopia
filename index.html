@@ -218,17 +218,49 @@
         *, *::before, *::after {
             cursor: url("https://raw.githubusercontent.com/khuccanhthien-byte/Hoamai/refs/heads/main/Vi-cursor.png") 16 16, auto !important;
         }
+   /* ===== NÚT NHẠC ===== */     
+  #music-btn{
+  background: rgba(231, 239, 227, 0.85);
+  color: #2f4f3a;
+  border: 1.2px solid #9fb7a3;
+  border-radius: 999px; /* bo tròn mảnh */
+
+  width: 34px;
+  height: 20px;
+
+  padding: 0;
+  font-size: 12px;
+  line-height: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+#music-btn:hover{
+  background: #d9e6d3;
+  transform: translateY(-1px);
+}
+
+
     </style>
 </head>
 <body>
     <a style="display: scroll; position: fixed; bottom: 3px; right: 7px;" title="Lên lại đầu trang" href="#"><img src="https://raw.githubusercontent.com/khuccanhthien-byte/Hoamai/refs/heads/main/back-to-top.jpeg" width="45" height="45" alt="" /></a>
-    <div class="top-nav">
-        <a href="page1.html">Đồ ngọt phương Đông</a>
-        <a href="page2.html">Đồ ngọt phương Tây</a>
-        <a href="page3.html">Đồ ngọt Việt Nam</a>
-        <a href="page4.html">Bài khảo sát nho nhỏ</a>
-        <a href="page5.html">Lịch sử của đồ ngọt</a>
-    </div>
+<div class="top-nav">
+    <a href="page1.html">Đồ ngọt phương Đông</a>
+    <a href="page2.html">Đồ ngọt phương Tây</a>
+    <a href="page3.html">Đồ ngọt Việt Nam</a>
+    <a href="page4.html">Bài khảo sát nho nhỏ</a>
+    <a href="page5.html">Lịch sử của đồ ngọt</a>
+
+    <!-- NÚT NHẠC -->
+    <button id="music-btn" onclick="toggleMusic()">🎵</button>
+</div>
+
 
     <div class="container">
         <header class="navbar">
@@ -285,6 +317,58 @@
         <footer class="bottom-stripes"></footer>
     </div>
 
+<audio id="bg-music" loop>
+  <source src="https://github.com/khuccanhthien-byte/Hoamai/raw/refs/heads/main/Luv%20Letter.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const music = document.getElementById("bg-music");
+const btn = document.getElementById("music-btn");
+
+// volume dịu
+music.volume = 0.35;
+
+// khôi phục trạng thái
+window.addEventListener("load", () => {
+  const isPlaying = localStorage.getItem("musicPlaying");
+  const currentTime = localStorage.getItem("musicTime");
+
+  if(currentTime){
+    music.currentTime = parseFloat(currentTime);
+  }
+
+  if(isPlaying === "true"){
+    music.play().catch(()=>{});
+    btn.innerHTML = "❚❚";
+  }else{
+    btn.innerHTML = "🎵";
+  }
+});
+
+// lưu thời gian mỗi 500ms
+setInterval(() => {
+  if(!music.paused){
+    localStorage.setItem("musicTime", music.currentTime);
+  }
+}, 500);
+
+// nút bật tắt
+function toggleMusic(){
+  if(music.paused){
+    music.play();
+    btn.innerHTML = "❚❚";
+    localStorage.setItem("musicPlaying", "true");
+  }else{
+    music.pause();
+    btn.innerHTML = "🎵";
+    localStorage.setItem("musicPlaying", "false");
+  }
+}
+</script>
+
+
+
+
     <script>
         function createDrop() {
             const drop = document.createElement('div');
@@ -320,5 +404,4 @@
     </script>
 </body>
 </html>
-
 
